@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Management;
-using SensorsSet;
+using SensorsSetNET;
 
 namespace SensorsSet_Test
 {

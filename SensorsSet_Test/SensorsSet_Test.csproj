@@ -6,11 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.IO.Ports" Version="4.7.0" />
     <PackageReference Include="System.Management" Version="4.7.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SensorsSet\SensorsSet.csproj" />
+    <ProjectReference Include="..\SensorsSetNET\SensorsSetNET.csproj" />
   </ItemGroup>
 
 </Project>
