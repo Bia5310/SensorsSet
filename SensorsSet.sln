@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29306.81
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SensorsSet", "SensorsSet\SensorsSet.csproj", "{0BDE1FF2-A1A1-4869-BB0D-DD1917DD6CCB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SensorsSet_Test", "SensorsSet_Test\SensorsSet_Test.csproj", "{CF7BD94D-9315-42CA-A259-CE87313CEA6C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0BDE1FF2-A1A1-4869-BB0D-DD1917DD6CCB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0BDE1FF2-A1A1-4869-BB0D-DD1917DD6CCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0BDE1FF2-A1A1-4869-BB0D-DD1917DD6CCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0BDE1FF2-A1A1-4869-BB0D-DD1917DD6CCB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF7BD94D-9315-42CA-A259-CE87313CEA6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF7BD94D-9315-42CA-A259-CE87313CEA6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF7BD94D-9315-42CA-A259-CE87313CEA6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF7BD94D-9315-42CA-A259-CE87313CEA6C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0508EBE5-9B23-45F1-819D-E6FA20BF8CC1}
+	EndGlobalSection
+EndGlobal
