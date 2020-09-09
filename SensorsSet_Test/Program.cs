@@ -9,6 +9,9 @@ namespace SensorsSet_Test
         static void Main(string[] args)
         {
             Sensors set = new Sensors();
+
+            Console.WriteLine("{0}, {1}, {2}, {3}", set.BaudRate, set.Parity, set.StopBits, set.DataBits);
+
             Console.WriteLine(set.AutoConnect(19200));
             
             while(true)

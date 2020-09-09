@@ -64,7 +64,7 @@ namespace SensorsSet
             while(true)
             {
                 if (DateTime.Now.Subtract(stTime).TotalMilliseconds > 2*ReadTimeout)
-                    throw new TimeoutException("Sensors receive deta timeout");
+                    throw new TimeoutException("Sensors receive data timeout");
 
                 if (BytesToRead < size)
                     continue;

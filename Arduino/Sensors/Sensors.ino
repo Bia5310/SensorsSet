@@ -163,12 +163,14 @@ void CollectAndSendData()
   }*/
   
   uint16_t lux = lightMeter.readLightLevel();
+
+  float hum = dht.readHumidity();
+  float temp = dht.readTemperature();
   
-  humidity = dht.readHumidity();
-  temperature = dht.readTemperature();
-  
-  if(!isnan(humidity) && !isnan(temperature))
+  if(!isnan(hum) && !isnan(temp))
   {
+    humidity = hum;
+    temperature = temp;
     #ifdef DEBUG
     Serial.print("Humidity: ");
     Serial.print(humidity);
@@ -180,8 +182,8 @@ void CollectAndSendData()
   }
   else
   {
-    humidity = 0;
-    temperature = 0;
+    //humidity = 0;
+    //temperature = 0;
     #ifdef DEBUG
     Serial.println("DHT read error");
     #endif

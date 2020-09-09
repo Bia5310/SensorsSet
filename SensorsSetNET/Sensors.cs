@@ -50,6 +50,7 @@ namespace SensorsSetNET
                 throw new Exception("Device is not opend!");
 
             DiscardInBuffer();
+            DiscardOutBuffer();
 
             byte[] outBuff = new byte[] { (byte)Messages.ReadAllSensors };
             Write(outBuff, 0, outBuff.Length);
@@ -63,8 +64,9 @@ namespace SensorsSetNET
 
             while(true)
             {
+                if(ReadTimeout != 0)
                 if (DateTime.Now.Subtract(stTime).TotalMilliseconds > 2*ReadTimeout)
-                    throw new TimeoutException("Sensors receive deta timeout");
+                    throw new TimeoutException("Sensors receive data timeout");
 
                 if (BytesToRead < size)
                     continue;
