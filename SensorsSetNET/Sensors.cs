@@ -49,8 +49,8 @@ namespace SensorsSetNET
             if (!IsOpen)
                 throw new Exception("Device is not opend!");
 
-            DiscardInBuffer();
-            DiscardOutBuffer();
+            //DiscardInBuffer();
+            //DiscardOutBuffer();
 
             byte[] outBuff = new byte[] { (byte)Messages.ReadAllSensors };
             Write(outBuff, 0, outBuff.Length);
@@ -140,21 +140,23 @@ namespace SensorsSetNET
             {
                 try
                 {
-                    SerialPort sp = new SerialPort(ports[i], baudRate, parity, dataBits, stopBits);
-                    sp.Open();
-                    sp.ReadTimeout = autoconnectTimeout;
-                    sp.WriteTimeout = autoconnectTimeout;
-                    sp.DiscardInBuffer();
-                    sp.Write(new byte[] { (byte)Messages.Hello }, 0, 1);
-                    byte[] buff = new byte[1];
-                    sp.Read(buff, 0, buff.Length);
-                    sp.Close();
-                    sp.Dispose();
-                    byte hl = (byte)Messages.Hello;
-                    if (buff[0]+1 == (byte)(Messages.Hello));
+                    using (SerialPort sp = new SerialPort(ports[i], baudRate, parity, dataBits, stopBits))
                     {
-                        port = ports[i];
-                        break;
+                        sp.Open();
+                        sp.ReadTimeout = autoconnectTimeout;
+                        sp.WriteTimeout = autoconnectTimeout;
+                        //sp.DiscardInBuffer();
+                        sp.Write(new byte[] { (byte)Messages.Hello }, 0, 1);
+                        byte[] buff = new byte[1];
+                        sp.Read(buff, 0, buff.Length);
+                        sp.Close();
+                        //sp.Dispose();
+                        byte hl = (byte)Messages.Hello;
+                        if (buff[0]+1 == (byte)(Messages.Hello));
+                        {
+                            port = ports[i];
+                            break;
+                        }
                     }
                 }
                 catch (Exception) { }
