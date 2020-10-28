@@ -1,6 +1,6 @@
 /*
 ============================
-<  Firmware Version 1.05   >
+<  Firmware Version 1.0   >
 ============================
 */
 
@@ -12,13 +12,8 @@
 #define DHTPIN 4
 #define DHTTYPE DHT22
 #define GPS_BAUDRATE 19200
-#define FILTER_BAUDRATE 115200
 #define LOOP_DELAY 100 //ms
 #define TIMEOUT_PC 1000
-
-//Master PC or AOF
-#define MASTER_PC 1
-#define MASTER_FILTER 2
 
 //#define NAV_POSLLH_CLASS 0x01
 #define NAV_POSLLH_ID 0x02
@@ -26,12 +21,11 @@
 #define NAV_TIMEGPS_ID 0x20
 
 #define PIN_GPS_CFG 7
-#define PIN_MASTER_CFG 8
 
 //messages from PC:
 #define MSG_MEASURE_ALL 0xDA
 #define MSG_HELLO 0xE5
-//#define DEBUG true //comment this to off DEBUF
+//#define DEBUG true
 
 #define PACK_HEAD 0xE1D6
 
@@ -41,11 +35,8 @@ const unsigned char UBX_HEADER[] = { 0xB5, 0x62 };
 BH1750 lightMeter;
 DHT dht(DHTPIN, DHTTYPE);
 SoftwareSerial gpsSerial(11, 12); //RX, TX
-
 bool gpsCfgMode = false;
 bool on = false;
-
-int master = MASTER_PC; //If master == MASTER_PC, communication will via Serial, if MASTER_FILTER => filterSerial
 
 float humidity = 0;
 float temperature = 0;
@@ -104,48 +95,22 @@ void setup() {
   lightMeter.begin();
   dht.begin();
   
+  gpsSerial.begin(GPS_BAUDRATE);
+  
   pinMode(PIN_GPS_CFG, INPUT);
-  pinMode(PIN_MASTER_CFG, INPUT);
-
-  checkMaster();
+  
   checkSerialMode();
   #ifdef DEBUG
-  if(master == MASTER_PC)
-    Serial.println("Running...(Master - PC)");
-  if(master == MASTER_FILTER)
-    Serial.println("Running...(Master - AOF)");
+  //Serial.println("Running...");
   #endif
-
-  gpsSerial.begin(GPS_BAUDRATE);
-  if(master == MASTER_PC)
-  {
-    filterSerial.begin(FILTER_BAUDRATE);
-    filterSerial.setTimeout(TIMEOUT_PC);
-  }
-}
-
-void checkMaster()
-{
-  int r = digitalRead(PIN_MASTER_CFG);
-  if( r == LOW)
-  {
-    master = MASTER_PC;
-  }
-  else if(r == HIGH)
-  {
-    master = MASTER_FILTER;
-  }
-  else
-  {
-    master = MASTER_PC;
-  }
 }
 
 byte readCommand()
 {
-  if(SerialAvailable() > 0)
+  if(Serial.available() > 0)
   {
-    byte b = SerialRead();
+    byte b = Serial.read();
+    //Serial.println(b, DEC);
     return b;
   }
   else
@@ -156,7 +121,7 @@ void loop() {
   
   checkSerialMode();
   
-  if(gpsCfgMode && master == MASTER_PC) //Only if we need configure C94-M8P GPS module
+  if(gpsCfgMode) //Only if we need configure C94-M8P GPS module
   {
     if (gpsSerial.available() > 0)
       Serial.write(gpsSerial.read());
@@ -168,9 +133,6 @@ void loop() {
   byte command = readCommand();
   if(command == MSG_MEASURE_ALL)
   {
-    #ifdef DEBUG
-      Serial.println("Measuring...");
-    #endif
     CollectAndSendData();
   }
   if(command == MSG_HELLO)
@@ -189,7 +151,7 @@ void loop() {
   //on = !on;
 
   #ifdef DEBUG
-  if(millis() % 5000 >= 1500)
+  if(millis() % 1000 >= 500)
     CollectAndSendData();
   #endif
   
@@ -206,7 +168,7 @@ void CollectAndSendData()
   }*/
   
   uint16_t lux = lightMeter.readLightLevel();
-  
+
   float hum = dht.readHumidity();
   float temp = dht.readTemperature();
   
@@ -246,8 +208,8 @@ void CollectAndSendData()
     timegps.iTOW,
     timegps.week
   };
-  SendPackage(package);
   
+  SendPackage(package);
   #endif
 
   #ifdef DEBUG
@@ -271,12 +233,6 @@ void CollectAndSendData()
   Serial.println(timegps.week);
   
   Serial.println("--------------------------");
-
-  /*if(master == MASTER_FILTER)
-  {
-    char chs[] = { 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x20, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26 };
-    SerialWrite(chs, 26);
-  }*/
   #endif
 }
 
@@ -292,13 +248,8 @@ void SendPackage(DATA_PACKAGE pack)
     buff[i] = pckptr[i];
   }
 
-  #ifdef DEBUG
-    Serial.print("PACKSIZE: ");
-    Serial.println(len, DEC);
-  #endif
-  
-  SerialWrite(buff, len);
-  SerialFlush();
+  Serial.write(buff, len);
+  Serial.flush();
 }
 
 void checkSerialMode()
@@ -385,64 +336,3 @@ bool processGPS(unsigned long timeout) {
   }
   return false;
 }
-
-/*
-int SerialAvailable()
-{
-  if(master == MASTER_PC)
-  {
-    return Serial.available();
-  }
-  else if(master == MASTER_FILTER)
-  {
-    return filterSerial.available();
-  }
-}
-
-byte SerialRead()
-{
-  if(master == MASTER_PC)
-  {
-    return Serial.read();
-  }
-  else if(master == MASTER_FILTER)
-  {
-    return filterSerial.read();
-  }
-}
-
-void SerialWrite(char* buff, int len)
-{
-  if(master == MASTER_PC)
-  {
-    Serial.write(buff, len);
-  }
-  else if(master == MASTER_FILTER)
-  {
-    filterSerial.write(buff, len);
-  }
-}
-
-void SerialWrite(byte b)
-{
-  if(master == MASTER_PC)
-  {
-    Serial.write(b);
-  }
-  else if(master == MASTER_FILTER)
-  {
-    filterSerial.write(b);
-  }
-}
-
-void SerialFlush()
-{
-  if(master == MASTER_PC)
-  {
-    Serial.flush();
-  }
-  else if(master == MASTER_FILTER)
-  {
-    filterSerial.flush();
-  }
-}*/

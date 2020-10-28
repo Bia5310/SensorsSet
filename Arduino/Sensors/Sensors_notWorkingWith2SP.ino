@@ -41,6 +41,7 @@ const unsigned char UBX_HEADER[] = { 0xB5, 0x62 };
 BH1750 lightMeter;
 DHT dht(DHTPIN, DHTTYPE);
 SoftwareSerial gpsSerial(11, 12); //RX, TX
+SoftwareSerial filterSerial(9, 10); //RX, TX
 
 bool gpsCfgMode = false;
 bool on = false;
@@ -175,8 +176,8 @@ void loop() {
   }
   if(command == MSG_HELLO)
   {
-    Serial.write(MSG_HELLO-1);
-    Serial.flush();
+    SerialWrite(MSG_HELLO-1);
+    SerialFlush();
   }
   
   processGPS(2000);
@@ -386,7 +387,6 @@ bool processGPS(unsigned long timeout) {
   return false;
 }
 
-/*
 int SerialAvailable()
 {
   if(master == MASTER_PC)
@@ -445,4 +445,4 @@ void SerialFlush()
   {
     filterSerial.flush();
   }
-}*/
+}

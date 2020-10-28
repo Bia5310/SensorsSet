@@ -7,23 +7,23 @@ namespace SensorsSet
 {
     public enum Messages : byte { ReadAllSensors = 0xDA, Hello = 0xE5 }
 
-    public class Sensors : SerialPort
+    public class SensorsSerial : SerialPort
     {
         #region Конструкторы
 
-        public Sensors() : base() { }
+        public SensorsSerial() : base() { }
 
-        public Sensors(string portName) : base(portName) { }
+        public SensorsSerial(string portName) : base(portName) { }
 
-        public Sensors(IContainer container) : base(container) { }
+        public SensorsSerial(IContainer container) : base(container) { }
 
-        public Sensors(string portName, int baudRate = 19200) : base(portName, baudRate) { }
+        public SensorsSerial(string portName, int baudRate = 19200) : base(portName, baudRate) { }
 
-        public Sensors(string portName, int baudRate, Parity parity) : base(portName, baudRate, parity) { }
+        public SensorsSerial(string portName, int baudRate, Parity parity) : base(portName, baudRate, parity) { }
 
-        public Sensors(string portName, int baudRate, Parity parity, int dataBits) : base(portName, baudRate, parity, dataBits) { }
+        public SensorsSerial(string portName, int baudRate, Parity parity, int dataBits) : base(portName, baudRate, parity, dataBits) { }
 
-        public Sensors(string portName, int baudRate, Parity parity, int dataBits, StopBits stopBits) : base(portName, baudRate, parity, dataBits, stopBits) { }
+        public SensorsSerial(string portName, int baudRate, Parity parity, int dataBits, StopBits stopBits) : base(portName, baudRate, parity, dataBits, stopBits) { }
 
         #endregion
 
