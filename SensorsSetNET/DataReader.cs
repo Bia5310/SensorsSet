@@ -55,23 +55,6 @@ namespace SensorsSetNET
                 c_prev = c;
 
             }
-            /*while (true)
-            {
-                if (stream.ReadTimeout != 0)
-                    if (DateTime.Now.Subtract(stTime).TotalMilliseconds > 2 * stream.ReadTimeout)
-                        throw new TimeoutException("Sensors receive data timeout");
-
-                if(stream.CanSeek)
-                    if (stream.Length - stream.Position < size)
-                        continue;
-
-                receivedBytes += stream.Read(inputBuff, receivedBytes, inputBuff.Length-receivedBytes);
-
-                if (receivedBytes < size)
-                    continue;
-
-                break;
-            }*/
 
             DataPackage package;
 

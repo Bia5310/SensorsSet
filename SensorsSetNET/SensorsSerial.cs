@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.IO;
 using System.IO.Ports;
 using System.Runtime.InteropServices;
+using System.Threading;
 
 namespace SensorsSetNET
 {
@@ -109,14 +110,16 @@ namespace SensorsSetNET
                         sp.Close();
                         //sp.Dispose();
                         byte hl = (byte)Messages.Hello;
-                        if (buff[0] + 1 == (byte)(Messages.Hello)) ;
+                        if (buff[0] + 1 == (byte)(Messages.Hello))
                         {
                             port = ports[i];
                             break;
                         }
                     }
                 }
-                catch (Exception) { }
+                catch (Exception ex) {
+                
+                }
             }
 
             if (port != "")
@@ -126,6 +129,7 @@ namespace SensorsSetNET
                 Parity = parity;
                 DataBits = dataBits;
                 StopBits = stopBits;
+                Thread.Sleep(300);
                 this.Open();
             }
 
