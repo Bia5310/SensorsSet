@@ -55,6 +55,11 @@ namespace SensorsSetNET
                 c_prev = c;
 
             }
+
+            /*var mystring = Encoding.Unicode.GetString(inputBuff);
+
+            Console.WriteLine(mystring);*/
+
             /*while (true)
             {
                 if (stream.ReadTimeout != 0)
@@ -116,7 +121,7 @@ namespace SensorsSetNET
 
         private const ushort HEAD = 0xE1D6;
 
-        [StructLayout(LayoutKind.Explicit, Size = 28)]
+        [StructLayout(LayoutKind.Explicit, Size = 29)]
         public unsafe struct DataPackage
         {
             [FieldOffset(0)]
@@ -145,6 +150,9 @@ namespace SensorsSetNET
 
             [FieldOffset(26)]
             public short weeks;
+
+            [FieldOffset(28)]
+            public byte end;
         }
     }
 }
