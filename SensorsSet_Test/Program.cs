@@ -50,11 +50,12 @@ namespace SensorsSet_Test
             SensorsSerial set = new SensorsSerial();
             set.BaudRate = 19200;
 
+            Console.WriteLine(set.AutoConnect(19200));
+
             Console.WriteLine("{0}, {1}, {2}, {3}", set.BaudRate, set.Parity, set.StopBits, set.DataBits);
 
-            Console.WriteLine(set.AutoConnect(19200));
-            
-            while(true)
+
+            while (true)
             {
                 try
                 {

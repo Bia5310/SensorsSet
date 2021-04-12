@@ -12,7 +12,7 @@
 #define DHTPIN 4
 #define DHTTYPE DHT22
 #define GPS_BAUDRATE 19200
-#define SERIAL_BDR 9600
+#define SERIAL_BDR 19200
 #define LOOP_DELAY 100 //ms
 #define TIMEOUT_PC 1000
 

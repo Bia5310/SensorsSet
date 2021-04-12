@@ -9,7 +9,7 @@ namespace SensorsSetNET
 {
     public enum Messages : byte { ReadAllSensors = 0xDA, Hello = 0xE5 }
 
-    public enum SensorsConnectionType { SerialPort, Ethernet }
+    public enum SensorsConnectionType { SerialPort, Ethernet, ViaAOF }
 
     public class SensorsSerial : SerialPort, ISensors
     {
