@@ -29,6 +29,7 @@
 //#define DEBUG true
 
 #define PACK_HEAD 0xE1D6
+#define END_OF_PACK 0xDA
 
 const unsigned char UBX_HEADER[] = { 0xB5, 0x62 };
 
@@ -81,6 +82,7 @@ struct DATA_PACKAGE {
   long latitude; //1e-7
   unsigned long iTOW; //time of week
   short week;
+  byte endofpack;
 };
 
 PACK_INFO info;
@@ -222,7 +224,8 @@ void CollectAndSendData()
     posllh.lon,
     posllh.lat,
     timegps.iTOW,
-    timegps.week
+    timegps.week,
+    END_OF_PACK
   };
   
   SendPackage(package);
