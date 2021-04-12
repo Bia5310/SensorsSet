@@ -56,28 +56,6 @@ namespace SensorsSetNET
 
             }
 
-            /*var mystring = Encoding.Unicode.GetString(inputBuff);
-
-            Console.WriteLine(mystring);*/
-
-            /*while (true)
-            {
-                if (stream.ReadTimeout != 0)
-                    if (DateTime.Now.Subtract(stTime).TotalMilliseconds > 2 * stream.ReadTimeout)
-                        throw new TimeoutException("Sensors receive data timeout");
-
-                if(stream.CanSeek)
-                    if (stream.Length - stream.Position < size)
-                        continue;
-
-                receivedBytes += stream.Read(inputBuff, receivedBytes, inputBuff.Length-receivedBytes);
-
-                if (receivedBytes < size)
-                    continue;
-
-                break;
-            }*/
-
             DataPackage package;
 
             unsafe
@@ -121,7 +99,7 @@ namespace SensorsSetNET
 
         private const ushort HEAD = 0xE1D6;
 
-        [StructLayout(LayoutKind.Explicit, Size = 29)]
+        [StructLayout(LayoutKind.Explicit, Size = 28)]
         public unsafe struct DataPackage
         {
             [FieldOffset(0)]
@@ -150,9 +128,6 @@ namespace SensorsSetNET
 
             [FieldOffset(26)]
             public short weeks;
-
-            [FieldOffset(28)]
-            public byte end;
         }
     }
 }
