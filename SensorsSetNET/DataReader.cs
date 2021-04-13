@@ -19,11 +19,17 @@ namespace SensorsSetNET
 
         public SensorsData ReadSensorsData()
         {
-            stream.Flush();
+            bool isMemstream = stream.GetType() == typeof(MemoryStream);
+
+            if(!isMemstream)
+                stream.Flush();
             //while (stream.ReadByte() != -1) { }
 
-            byte[] outBuff = new byte[] { (byte)Messages.ReadAllSensors };
-            stream.Write(outBuff, 0, outBuff.Length);
+            if(!isMemstream)
+            {
+                byte[] outBuff = new byte[] { (byte)Messages.ReadAllSensors };
+                stream.Write(outBuff, 0, outBuff.Length);
+            }
 
             int size = SizeOfDataPackage();
 
@@ -36,7 +42,7 @@ namespace SensorsSetNET
             int c_prev = -1;
             while (true)
             {
-                if (stream.ReadTimeout != 0)
+                if (stream.CanTimeout && stream.ReadTimeout != 0)
                     if (DateTime.Now.Subtract(stTime).TotalMilliseconds > 2 * stream.ReadTimeout)
                         throw new TimeoutException("Sensors receive data timeout");
 

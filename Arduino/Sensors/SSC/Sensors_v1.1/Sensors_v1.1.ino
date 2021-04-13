@@ -12,7 +12,7 @@
 #define DHTPIN 4
 #define DHTTYPE DHT22
 #define GPS_BAUDRATE 19200
-#define SERIAL_BDR 19200
+#define SERIAL_BDR 9600
 #define LOOP_DELAY 100 //ms
 #define TIMEOUT_PC 1000
 
@@ -27,6 +27,8 @@
 #define MSG_MEASURE_ALL 0xDA
 #define MSG_HELLO 0xE5
 //#define DEBUG true
+//#define ECHO true
+#define FLIP true
 
 #define PACK_HEAD 0xE1D6
 #define END_OF_PACK 0xDA
@@ -113,9 +115,14 @@ byte readCommand()
   if(Serial.available() > 0)
   {
     byte b = Serial.read();
+    #ifdef ECHO
+    Serial.write(b);
+    #endif
     //Serial.println(b, DEC);
-    
+
+    #ifdef FLIP
     flip(2);
+    #endif
     
     return b;
   }
@@ -150,7 +157,9 @@ void loop() {
   byte command = readCommand();
   if(command == MSG_MEASURE_ALL)
   {
+    #ifdef FLIP
     flip(2);
+    #endif
     CollectAndSendData();
   }
   if(command == MSG_HELLO)
@@ -266,7 +275,9 @@ void SendPackage(DATA_PACKAGE pack)
   {
     buff[i] = pckptr[i];
   }
+  #ifdef FLIP
   flip(2);
+  #endif
   Serial.write(buff, len);
   //Serial.flush();
 }
